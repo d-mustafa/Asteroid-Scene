@@ -1,28 +1,50 @@
 const cnv = document.getElementById('myCanvas');
 const ctx = cnv.getContext('2d');
-
+let titleEl = document.getElementById('title');
 
 
 // Variables
 let asteroids = [];
 let moon = {
-  x: 350,
-  y: 200,
+  x: 0,
+  y: -250,
   radius: 30,
+  angle: 190,
+  dAngle: 12,
 }
+
 let leftKey = false;
 let qKey = false;
 let eKey = false;
+let wKey = false;
+let sKey = false;
+
 let timeVar = 0;
-let timeOfDay = ["dawn", "sunrise", "morning", "noon", "afternoon", "sunset", "evening", "moonrise", "early night", "midnight", "late night", "moonset"];
+let period = 50;
+
+
+let timeOfDay = [
+  {time: "dawn", skyColor: "#ff8547", moonColor:`#FFFFFF`, moonAngle: 170},
+  {time: "sunrise", skyColor: "#ff723d", moonColor:`#FFA07A`, moonAngle: 290},
+  {time: "morning", skyColor: "#87CEEB", moonColor:`#FFD700`, moonAngle: 320},
+  {time: "noon", skyColor: "#00BFFF", moonColor:`#FFFF00`, moonAngle: 0},
+  {time: "afternoon", skyColor: "#00CED1", moonColor:`#ffa86e`, moonAngle: 40},
+  {time: "sunset", skyColor: "#FF6347", moonColor:`#FF6E7F`, moonAngle: 430},
+  {time: "evening", skyColor: "#ffa1a1", moonColor:`#FFFFFF`, moonAngle: 170},
+  {time: "moonrise", skyColor: "#4B0082", moonColor:`#E0E0E0`, moonAngle: 290},
+  {time: "early night", skyColor: "#1A1A2E", moonColor:`#F8F8FF`, moonAngle: 320},
+  {time: "midnight", skyColor: "#000033", moonColor:`#ffffff`, moonAngle: 0},
+  {time: "late night", skyColor: "#363696", moonColor:`#F8F8FF`, moonAngle: 40},
+  {time: "moonset", skyColor: "#4d4dbf", moonColor:`#E0E0E0`, moonAngle: 430},
+];
+
+// 400, 350, 275, 200
 let timeIndex = 0;
 
 // Fill asteroid associative array
 for(let i = 0; i < 1000; i++) {
   asteroids.push(createAsteroid());
 }
-
-console.log(asteroids);
 
 // Keyboard Events
 document.addEventListener('keydown', keydownHandler)
@@ -41,6 +63,14 @@ function keydownHandler(event) {
   if (event.code == "KeyE") {
     eKey = true;
   }
+
+  if (event.code == "KeyW") {
+    wKey = true;
+  }
+
+  if (event.code == "KeyS") {
+    sKey = true;
+  }
 }
 
 function keyupHandler(event) {
@@ -56,29 +86,48 @@ function keyupHandler(event) {
   if (event.code == "KeyE") {
     eKey = false;
   }
+
+  if (event.code == "KeyW") {
+    wKey = false;
+  }
+
+  if (event.code == "KeyS") {
+    sKey = false;
+  }
 }
 
 function drawScene() {
+
+  // Time Related
   timeVar++;
 
-  // Draw the sky
-  if (timeVar % 50 == 0) {
+  if (timeVar % period == 0) {
     timeIndex++;
     if (timeIndex == timeOfDay.length) {
       timeIndex = 0;
     }
-    console.log(timeOfDay[timeIndex])
+  }
+  
+  if (wKey && period > 10) {
+    period--;
+  } else if (sKey && period < 100) {
+    period++;
   }
 
-  determineFillStyle([`#1D3C6A`, `#FF4500`, `#87CEEB`, `#00BFFF`, `#00CED1`, `#FF6347`, `#4B0082`, `#1A1A2E`, `#000033`, `#1A1A2E`]);
+  // Draw the sky
+  ctx.fillStyle = timeOfDay[timeIndex]["skyColor"];
   ctx.fillRect(0,0,cnv.width, cnv.height);
 
   // Asteroids
   asteroids.forEach(asteroid => {
     ctx.fillStyle = `rgb(${asteroid["color"]}, ${asteroid["color"]}, ${asteroid["color"]})`;
     ctx.save();
+    ctx.translate(350, 500);
+    ctx.rotate(timeOfDay[timeIndex]["moonAngle"]*Math.PI/180);
+
     ctx.translate(moon.x, moon.y);
     ctx.rotate(asteroid["angle"]*Math.PI/180);
+    
     
     ctx.beginPath();
     ctx.arc(asteroid["x"], asteroid["y"], asteroid["radius"], 0, Math.PI*2);
@@ -145,20 +194,16 @@ function drawScene() {
 
   
   // Sun/Moon
-  determineFillStyle([`#1C1C3A`, `#FFA07A`, `#FFD700`, `#FFFF00`, `#FFE4B5`, `#FF6E7F`, `#FFA500`, `#E0E0E0`, `#F8F8FF`, `#E0E0E0`]);
+  ctx.fillStyle = timeOfDay[timeIndex]["moonColor"];
+  ctx.save();
+  ctx.translate(350, 500);
+  ctx.rotate(timeOfDay[timeIndex]["moonAngle"]*Math.PI/180);
+
   ctx.beginPath();
   ctx.arc(moon.x, moon.y, moon.radius, 0, Math.PI*2);
   ctx.fill();
 
-  if (timeOfDay[timeIndex] == "dawn" || timeOfDay[timeIndex] == "evening") {
-    moon.y = 400;
-  } else if (timeOfDay[timeIndex] == "sunrise" || timeOfDay[timeIndex] == "sunset" ||  timeOfDay[timeIndex] == "moonrise" || timeOfDay[timeIndex] == "moonset") {
-    moon.y = 350;
-  } else if (timeOfDay[timeIndex] == "morning" || timeOfDay[timeIndex] == "afternoon" || timeOfDay[timeIndex] == "early night" || timeOfDay[timeIndex] == "late night") {
-    moon.y = 275;
-  } else if (timeOfDay[timeIndex] == "noon" || timeOfDay[timeIndex] == "midnight") {
-    moon.y = 200;
-  } 
+  ctx.restore();
   
 
   // Backdrop Hill 1
@@ -239,6 +284,7 @@ function drawScene() {
   ctx.lineTo(387, 408);
   ctx.fill();
 
+  titleEl.style.color = timeOfDay[timeIndex]["skyColor"];
   window.requestAnimationFrame(drawScene);
 }
 window.requestAnimationFrame(drawScene);
@@ -268,32 +314,6 @@ function createAsteroid() {
 
   return oneAsteroid;
 }
-
-function determineFillStyle(colors) {
-  if(timeOfDay[timeIndex] == "dawn") {
-    ctx.fillStyle = colors[0];
-  } else if(timeOfDay[timeIndex] == "sunrise") {
-    ctx.fillStyle = colors[1];
-  } else if(timeOfDay[timeIndex] == "morning") {
-    ctx.fillStyle = colors[2];
-  } else if(timeOfDay[timeIndex] == "noon") {
-    ctx.fillStyle = colors[3];
-  } else if(timeOfDay[timeIndex] == "afternoon") {
-    ctx.fillStyle = colors[4];
-  } else if(timeOfDay[timeIndex] == "sunset") {
-    ctx.fillStyle = colors[5];
-  } else if(timeOfDay[timeIndex] == "evening") {
-    ctx.fillStyle = colors[6];
-  } else if(timeOfDay[timeIndex] == "early night") {
-    ctx.fillStyle = colors[7];
-  } else if(timeOfDay[timeIndex] == "midnight") {
-    ctx.fillStyle = colors[8];
-  } else if(timeOfDay[timeIndex] == "late night") {
-    ctx.fillStyle = colors[8];
-  }
-}
-
-
 
 
 // ***************************************************
