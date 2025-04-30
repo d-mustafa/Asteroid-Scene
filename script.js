@@ -11,9 +11,11 @@ let moon = {
   radius: 30,
 }
 let leftKey = false;
-let rightKey = false;
 let qKey = false;
 let eKey = false;
+let timeVar = 0;
+let timeOfDay = ["early morning", "sunrise", "morning", "noon", "afternoon", "sunset", "evening", "night", "mignight"];
+let timeIndex = 0;
 
 // Fill asteroid associative array
 for(let i = 0; i < 100; i++) {
@@ -32,10 +34,6 @@ function keydownHandler(event) {
     leftKey = true;
   }
 
-  if (event.code == "ArrowRight") {
-    rightKey = true;
-  }
-
   if (event.code == "KeyQ") {
     qKey = true;
   }
@@ -51,10 +49,6 @@ function keyupHandler(event) {
     leftKey = false;
   }
 
-  if (event.code == "ArrowRight") {
-    rightKey = false;
-  }
-
   if (event.code == "KeyQ") {
     qKey = false;
   }
@@ -64,9 +58,39 @@ function keyupHandler(event) {
   }
 }
 
-function drawScene() {
+function drawScene() 
+  timeVar++;
+
   // Draw the sky
-  ctx.fillStyle = `#001f3f`;
+  if (timeVar % 500 = 0) {
+    timeIndex += 1;
+    if (timeIndex == timeOfDay.length) {
+      timeIndex == 0;
+    }
+  }
+
+  determineFillStyle([`#1D3C6A`, `#FF4500`, `#87CEEB`, `#00BFFF`, `#00CED1`, `#FF6347`, `#4B0082`, `#1A1A2E`, `#000033`]);
+
+  // if(timeOfDay[timeIndex] == "early morning") {
+  //   ctx.fillStyle = `#1D3C6A`;
+  // } else if(timeOfDay[timeIndex] == "sunrise") {
+  //   ctx.fillStyle = `#FF4500`;
+  // } else if(timeOfDay[timeIndex] == "morning") {
+  //   ctx.fillStyle = `#87CEEB`;
+  // } else if(timeOfDay[timeIndex] == "noon") {
+  //   ctx.fillStyle = `#00BFFF`;
+  // } else if(timeOfDay[timeIndex] == "afternoon") {
+  //   ctx.fillStyle = `#00CED1`;
+  // } else if(timeOfDay[timeIndex] == "sunset") {
+  //   ctx.fillStyle = `#FF6347`;
+  // } else if(timeOfDay[timeIndex] == "evening") {
+  //   ctx.fillStyle = `#4B0082`;
+  // } else if(timeOfDay[timeIndex] == "night") {
+  //   ctx.fillStyle = `#1A1A2E`;
+  // } else if(timeOfDay[timeIndex] == "midnight") {
+  //   ctx.fillStyle = `#000033`;
+  // }
+
   ctx.fillRect(0,0,cnv.width, cnv.height);
 
   // Asteroids
@@ -139,18 +163,13 @@ function drawScene() {
     asteroid["angle"] += asteroid["dAngle"];
   })
 
-  // Moon
-  ctx.fillStyle = 'rgb(255, 255, 255)';
+  
+  // Sun/Moon
+  determineFillStyle([`#1C1C3A`, `#FFA07A`, `#FFD700`, `#FFFF00`, `#FFE4B5`, `#FF6E7F`, `#FFA500`, `#191970`, `#B0C4DE`]);
   ctx.beginPath();
   ctx.arc(moon.x, moon.y, moon.radius, 0, Math.PI*2);
   ctx.fill();
-
-  // // Moon Block
-  // ctx.fillStyle = `#001f3f`;
-  // ctx.beginPath();
-  // ctx.arc(moon.x+15, moon.y-10, moon.radius, 0, Math.PI*2);
-  // ctx.fill();
-
+  
 
   // Backdrop Hill 1
   ctx.fillStyle = "rgb(0, 73, 0)";
@@ -259,6 +278,31 @@ function createAsteroid() {
 
   return oneAsteroid;
 }
+
+function determineFillStyle(colors) {
+  if(timeOfDay[timeIndex] == "early morning") {
+    ctx.fillStyle = colors[0];
+  } else if(timeOfDay[timeIndex] == "sunrise") {
+    ctx.fillStyle = colors[1];
+  } else if(timeOfDay[timeIndex] == "morning") {
+    ctx.fillStyle = colors[2];
+  } else if(timeOfDay[timeIndex] == "noon") {
+    ctx.fillStyle = colors[3];
+  } else if(timeOfDay[timeIndex] == "afternoon") {
+    ctx.fillStyle = colors[4];
+  } else if(timeOfDay[timeIndex] == "sunset") {
+    ctx.fillStyle = colors[5];
+  } else if(timeOfDay[timeIndex] == "evening") {
+    ctx.fillStyle = colors[6];
+  } else if(timeOfDay[timeIndex] == "night") {
+    ctx.fillStyle = colors[7];
+  } else if(timeOfDay[timeIndex] == "midnight") {
+    ctx.fillStyle = colors[8];
+  }
+}
+
+
+
 
 // ***************************************************
 // Global Vars
