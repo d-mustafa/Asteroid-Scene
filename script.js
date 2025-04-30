@@ -18,7 +18,7 @@ let timeOfDay = ["early morning", "sunrise", "morning", "noon", "afternoon", "su
 let timeIndex = 0;
 
 // Fill asteroid associative array
-for(let i = 0; i < 100; i++) {
+for(let i = 0; i < 1000; i++) {
   asteroids.push(createAsteroid());
 }
 
