@@ -62,7 +62,7 @@ function drawScene()
   timeVar++;
 
   // Draw the sky
-  if (timeVar % 500 = 0) {
+  if (timeVar % 500 == 0) {
     timeIndex += 1;
     if (timeIndex == timeOfDay.length) {
       timeIndex == 0;
@@ -70,27 +70,6 @@ function drawScene()
   }
 
   determineFillStyle([`#1D3C6A`, `#FF4500`, `#87CEEB`, `#00BFFF`, `#00CED1`, `#FF6347`, `#4B0082`, `#1A1A2E`, `#000033`]);
-
-  // if(timeOfDay[timeIndex] == "early morning") {
-  //   ctx.fillStyle = `#1D3C6A`;
-  // } else if(timeOfDay[timeIndex] == "sunrise") {
-  //   ctx.fillStyle = `#FF4500`;
-  // } else if(timeOfDay[timeIndex] == "morning") {
-  //   ctx.fillStyle = `#87CEEB`;
-  // } else if(timeOfDay[timeIndex] == "noon") {
-  //   ctx.fillStyle = `#00BFFF`;
-  // } else if(timeOfDay[timeIndex] == "afternoon") {
-  //   ctx.fillStyle = `#00CED1`;
-  // } else if(timeOfDay[timeIndex] == "sunset") {
-  //   ctx.fillStyle = `#FF6347`;
-  // } else if(timeOfDay[timeIndex] == "evening") {
-  //   ctx.fillStyle = `#4B0082`;
-  // } else if(timeOfDay[timeIndex] == "night") {
-  //   ctx.fillStyle = `#1A1A2E`;
-  // } else if(timeOfDay[timeIndex] == "midnight") {
-  //   ctx.fillStyle = `#000033`;
-  // }
-
   ctx.fillRect(0,0,cnv.width, cnv.height);
 
   // Asteroids
