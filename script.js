@@ -65,7 +65,7 @@ function drawScene()
   if (timeVar % 1500 == 0) {
     timeIndex++;
     if (timeIndex == timeOfDay.length) {
-      timeIndex == 0;
+      timeIndex = 0;
     }
   }
 
