@@ -62,7 +62,7 @@ function drawScene()
   timeVar++;
 
   // Draw the sky
-  if (timeVar % 500 == 0) {
+  if (timeVar % 1500 == 0) {
     timeIndex += 1;
     if (timeIndex == timeOfDay.length) {
       timeIndex == 0;
