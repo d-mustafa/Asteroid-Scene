@@ -1,6 +1,10 @@
 const cnv = document.getElementById('myCanvas');
 const ctx = cnv.getContext('2d');
+
+// HTML Elements
 let titleEl = document.getElementById('title');
+let asteroidEl = document.getElementById('asteroid-speed');
+let timeEl = document.getElementById('time-speed');
 
 
 // Variables
@@ -22,20 +26,23 @@ let sKey = false;
 let timeVar = 0;
 let period = 50;
 
+let accelerationTracker = 1;
+let daccelerationTrackerAdd = (1/360)/50;
+
 
 let timeOfDay = [
-  {time: "dawn", skyColor: "#ff8547", moonColor:`#FFFFFF`, moonAngle: 170},
-  {time: "sunrise", skyColor: "#ff723d", moonColor:`#FFA07A`, moonAngle: 290},
-  {time: "morning", skyColor: "#87CEEB", moonColor:`#FFD700`, moonAngle: 320},
-  {time: "noon", skyColor: "#00BFFF", moonColor:`#FFFF00`, moonAngle: 0},
-  {time: "afternoon", skyColor: "#00CED1", moonColor:`#ffa86e`, moonAngle: 40},
-  {time: "sunset", skyColor: "#FF6347", moonColor:`#FF6E7F`, moonAngle: 430},
-  {time: "evening", skyColor: "#ffa1a1", moonColor:`#FFFFFF`, moonAngle: 170},
-  {time: "moonrise", skyColor: "#4B0082", moonColor:`#E0E0E0`, moonAngle: 290},
-  {time: "early night", skyColor: "#1A1A2E", moonColor:`#F8F8FF`, moonAngle: 320},
-  {time: "midnight", skyColor: "#000033", moonColor:`#ffffff`, moonAngle: 0},
-  {time: "late night", skyColor: "#363696", moonColor:`#F8F8FF`, moonAngle: 40},
-  {time: "moonset", skyColor: "#4d4dbf", moonColor:`#E0E0E0`, moonAngle: 430},
+  {time: "dawn", skyColor: ["#6e81ff", "#C0D0DF", "#ff8547"], moonColor:`#FFFFFF`, moonAngle: 170},
+  {time: "sunrise", skyColor: ["#4059ff", "#87CEEB", "#F4CF86"], moonColor:`#FFA07A`, moonAngle: 290},
+  {time: "morning", skyColor: ["#00BFFF", "#74BDDA", "#d1f3ff"], moonColor:`#FFD700`, moonAngle: 320},
+  {time: "noon", skyColor: ["#085ECB", "#085ECB", "#2FE2F7"], moonColor:`#FFFF00`, moonAngle: 0},
+  {time: "afternoon", skyColor: ["#325DB0", "#5A82CF", "#9BC1F9"], moonColor:`#ffa86e`, moonAngle: 40},
+  {time: "sunset", skyColor: ["#B285B4", "#D29EBF", "#F39E6A"], moonColor:`#FF6E7F`, moonAngle: 430},
+  {time: "evening", skyColor: ["#A0687B", "#c992a4", "#F7B969"], moonColor:`#FFFFFF`, moonAngle: 170},
+  {time: "moonrise", skyColor: ["#AF849A", "#907198", "#506C98"], moonColor:`#757575`, moonAngle: 290},
+  {time: "early night", skyColor: ["#114E9E","#486FBA", "#606395"], moonColor:`#BDBDBD`, moonAngle: 320},
+  {time: "midnight", skyColor: ["#090B17", "#0B234B", "#0C5BA1"], moonColor:`#FFFFFF`, moonAngle: 0},
+  {time: "late night", skyColor: ["#082855", "#0B5B9F", "#0B83BD"], moonColor:`#BDBDBD`, moonAngle: 40},
+  {time: "moonset", skyColor: ["#10366b", "#146ab3", "#1089c4"], moonColor:`#757575`, moonAngle: 430},
 ];
 
 // 400, 350, 275, 200
@@ -110,12 +117,21 @@ function drawScene() {
   
   if (wKey && period > 10) {
     period--;
+    timeEl.innerHTML = ((1/period)*50).toFixed(2);
   } else if (sKey && period < 100) {
     period++;
+    timeEl.innerHTML = ((1/period)*50).toFixed(2);
   }
 
   // Draw the sky
-  ctx.fillStyle = timeOfDay[timeIndex]["skyColor"];
+  const grad=ctx.createLinearGradient(cnv.width/2, 0, cnv.width/2, cnv.height);
+  grad.addColorStop(0, timeOfDay[timeIndex]["skyColor"][0]);
+  grad.addColorStop(0.5, timeOfDay[timeIndex]["skyColor"][1]);
+  grad.addColorStop(0.9, timeOfDay[timeIndex]["skyColor"][2]);
+  
+  ctx.fillStyle = grad;
+
+  // ctx.fillStyle = timeOfDay[timeIndex]["skyColor"];
   ctx.fillRect(0,0,cnv.width, cnv.height);
 
   // Asteroids
@@ -145,9 +161,18 @@ function drawScene() {
         } else if (asteroid["dAngle"] < 0) { // Slow down near zero
           asteroid["dAngle"] += asteroid["dAngleAdd"];
         }
-      }
-      else if (qKey && (asteroid["dAngle"] > -asteroid["dAngleUpperLimit"])) { // SPEED UP
+
+        if (accelerationTracker > -0.01 || accelerationTracker < 0.01){
+          accelerationTracker = 0;
+        } else if (accelerationTracker < 3) {
+          accelerationTracker += daccelerationTrackerAdd;
+        }
+      } else if (qKey && (asteroid["dAngle"] > -asteroid["dAngleUpperLimit"])) { // SPEED UP
         asteroid["dAngle"] += -asteroid["dAngleAdd"];
+
+        if (accelerationTracker < 3) {
+          accelerationTracker += daccelerationTrackerAdd;
+        }
 
       } else if (eKey) { // SLOW DOWN
         if (asteroid["dAngle"] > -asteroid["dAngleLowerLimit"]) {
@@ -156,11 +181,24 @@ function drawScene() {
         if (asteroid["dAngle"] < -asteroid["dAngleLowerLimit"]*2) {
           asteroid["dAngle"] += asteroid["dAngleAdd"];
         }
+
+        if (accelerationTracker > 1/6) {
+          accelerationTracker -= daccelerationTrackerAdd;
+        }
+
       } else { // NORMALIZE
         if (asteroid["dAngle"] >= -asteroid["dAngleOriginal"]) {
           asteroid["dAngle"] -= asteroid["dAngleAdd"];
         } else if (asteroid["dAngle"] <= -asteroid["dAngleOriginal"]){
           asteroid["dAngle"] += asteroid["dAngleAdd"];
+        }
+
+        if (accelerationTracker < 4 && accelerationTracker > 1) {
+          accelerationTracker -= daccelerationTrackerAdd;
+        }
+
+        if (accelerationTracker > -1 && accelerationTracker < 1) {
+          accelerationTracker += daccelerationTrackerAdd;
         }
       }
     } else  {
@@ -170,9 +208,19 @@ function drawScene() {
         } else if (asteroid["dAngle"] > 0) { // Slow down near zero
           asteroid["dAngle"] -= asteroid["dAngleAdd"];
         }
+
+        if (accelerationTracker > -0.01 || accelerationTracker < 0.01){
+          accelerationTracker = 0;
+        } else if (accelerationTracker < 3) {
+          accelerationTracker += daccelerationTrackerAdd;
+        }
       }
       else if (qKey && (asteroid["dAngle"] < asteroid["dAngleUpperLimit"])) { // SPEED UP
         asteroid["dAngle"] += asteroid["dAngleAdd"];
+
+        if (accelerationTracker < 3) {
+          accelerationTracker += daccelerationTrackerAdd;
+        }
 
       } else if (eKey) { // SLOW DOWN
         if (asteroid["dAngle"] > asteroid["dAngleLowerLimit"]) {
@@ -181,15 +229,29 @@ function drawScene() {
         if (asteroid["dAngle"] < asteroid["dAngleLowerLimit"]*2) {
           asteroid["dAngle"] += asteroid["dAngleAdd"];
         }
+
+        if (accelerationTracker > 1/6) {
+          accelerationTracker -= daccelerationTrackerAdd;
+        }
       } else { // NORMALIZE
         if (asteroid["dAngle"] >= asteroid["dAngleOriginal"]) {
           asteroid["dAngle"] -= asteroid["dAngleAdd"];
         } else if (asteroid["dAngle"] <= asteroid["dAngleOriginal"]){
           asteroid["dAngle"] += asteroid["dAngleAdd"];
         }
+
+        if (accelerationTracker < 4 && accelerationTracker > 1) {
+          accelerationTracker -= daccelerationTrackerAdd;
+        }
+
+        if (accelerationTracker > -1 && accelerationTracker < 1) {
+          accelerationTracker += daccelerationTrackerAdd;
+        }
       }
     }
+
     asteroid["angle"] += asteroid["dAngle"];
+    asteroidEl.innerHTML = (accelerationTracker).toFixed(2);
   })
 
   
@@ -315,6 +377,9 @@ function createAsteroid() {
   return oneAsteroid;
 }
 
+// Predefined HTML Elements
+asteroidEl.innerHTML = (accelerationTracker).toFixed(2);
+timeEl.innerHTML = ((1/period)*50).toFixed(2);
 
 // ***************************************************
 // Global Vars
