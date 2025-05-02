@@ -162,10 +162,10 @@ function drawScene() {
           asteroid["dAngle"] += asteroid["dAngleAdd"];
         }
 
-        if (accelerationTracker > -0.01 || accelerationTracker < 0.01){
+        if (accelerationTracker > -0.01 && accelerationTracker < 0.01){
           accelerationTracker = 0;
         } else if (accelerationTracker < 3) {
-          accelerationTracker += daccelerationTrackerAdd;
+          accelerationTracker -= daccelerationTrackerAdd;
         }
       } else if (qKey && (asteroid["dAngle"] > -asteroid["dAngleUpperLimit"])) { // SPEED UP
         asteroid["dAngle"] += -asteroid["dAngleAdd"];
@@ -209,10 +209,10 @@ function drawScene() {
           asteroid["dAngle"] -= asteroid["dAngleAdd"];
         }
 
-        if (accelerationTracker > -0.01 || accelerationTracker < 0.01){
+        if (accelerationTracker > -0.01 && accelerationTracker < 0.01){
           accelerationTracker = 0;
         } else if (accelerationTracker < 3) {
-          accelerationTracker += daccelerationTrackerAdd;
+          accelerationTracker -= daccelerationTrackerAdd;
         }
       }
       else if (qKey && (asteroid["dAngle"] < asteroid["dAngleUpperLimit"])) { // SPEED UP
