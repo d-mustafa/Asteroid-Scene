@@ -413,7 +413,7 @@ function createAsteroid() {
     angle: Math.random() * 360,
     dAngle: Math.random() * 1.9 + 0.1,
     color: Math.random() * 150 + 50,
-  
+  }
 
   oneAsteroid.dAngleOriginal = oneAsteroid.dAngle;
   oneAsteroid.dAngleUpperLimit = oneAsteroid.dAngle*3;
