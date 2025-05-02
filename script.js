@@ -197,8 +197,7 @@ function drawScene() {
         } else if (accelerationTracker > -4) {
           accelerationTracker += daccelerationTracker;
         }
-
-        qKey_eKeyElement.style.color = timeOfDay[timeIndex]["skyColor"][0];
+        
       } 
       /* SPEED UP ASTEROIDS LEFT */
       else if (qKey) {
