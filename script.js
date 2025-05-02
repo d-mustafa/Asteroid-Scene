@@ -34,14 +34,8 @@ let eKey = false;
 let wKey = false;
 let sKey = false;
 let controlElements = [
-  qKeyElement,
-  eKeyElement,
-  qKey_eKeyElement,
-  leftKeyElement,
-  leftKey_qKeyElement,
-  leftKey_eKeyElement,
-  wKeyElement,
-  sKeyElement
+  { affectsAsteroids: [qKeyElement, eKeyElement, qKey_eKeyElement, leftKeyElement, leftKey_qKeyElement, leftKey_eKeyElement] },
+  { affectsTime: [wKeyElement, sKeyElement] },
 ];
 
 let timeOfDay = [
@@ -136,6 +130,7 @@ function keyupHandler(event) {
 }
 
 function drawScene() {
+  // Color instructions
   colorCurrentPressedControl();
   
   // Time Related
@@ -177,7 +172,6 @@ function drawScene() {
 
     ctx.translate(moon.x, moon.y);
     ctx.rotate(asteroid["angle"]*Math.PI/180);
-    
     
     ctx.beginPath();
     ctx.arc(asteroid["x"], asteroid["y"], asteroid["radius"], 0, Math.PI*2);
@@ -436,14 +430,31 @@ function createAsteroid() {
   return oneAsteroid;
 }
 
-function determineAndColorGivenControl(wantedElement) {
-    for (let element in controlElements) {
-      if(controlElements[element] != eval(wantedElement)) {
-        controlElements[element].style.color = "black";
-      } else {
-        controlElements[element].style.color = timeOfDay[timeIndex]["skyColor"][2];
+
+function determineAndColorGivenControl(wantedElement, asteroidControl = True) {
+  for (let key in controlElements) {
+    // Only Color/Discolor if it's a control that affects asteroids
+      (asteroidControl) {
+      for (let element in controlElements[key]["affectsAsteroids"]) {
+        if (controlElements[key]["affectsAsteroids"][element] == eval(wantedElement) {
+          controlElements[key]["affectsAsteroids"][element].style.color = timeOfDay[timeIndex]["skyColor"][2];
+        } else {
+          controlElements[key]["affectsAsteroids"][element].style.color = "black";
+        }
       }
     }
+
+    // Only Color/Discolor if it's a control that affects time
+    else {
+      for (let element in controlElements[key]["affectsTime"]) {
+        if (controlElements[key]["affectsTime"][element] == eval(wantedElement) {
+          controlElements[key]["affectsTime"][element].style.color = timeOfDay[timeIndex]["skyColor"][2];
+        } else {
+          controlElements[key]["affectsTime"][element].style.color = "black";
+        }
+      }
+    }  
+  }
 }
 
 function colorCurrentPressedControl() { 
@@ -469,17 +480,22 @@ function colorCurrentPressedControl() {
         }
     }
 
-    if(wKey) {
-      determineAndColorGivenControl(wKeyElement);
+    if (wKey) {
+      determineAndColorGivenControl(wKeyElement, False);
     } else if(sKey) {
-      determineAndColorGivenControl(sKeyElement);
+      determineAndColorGivenControl(sKeyElement, False);
     }
     
   }
   // If no keys are being pressed, default them all to black
   else {
-    for (let element in controlElements) {
-        controlElements[element].style.color = "black";
+    for (let key in controlElements) {
+      for (let element in controlElements[key]["affectsAsteroids"]) {
+        controlElements[key]["affectsAsteroids"][element].style.color = "black";
+      }
+      for (let element in controlElements[key]["affectsTime"]) {
+        controlElements[key]["affectsTime"][element].style.color = "black";
+      }
     }
   }
 
