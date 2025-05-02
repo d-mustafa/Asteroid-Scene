@@ -27,7 +27,7 @@ let timeVar = 0;
 let period = 50;
 
 let accelerationTracker = 1;
-let daccelerationTrackerAdd = (1/360)/50;
+let daccelerationTracker = (1/360)/50;
 
 
 let timeOfDay = [
@@ -58,7 +58,7 @@ document.addEventListener('keydown', keydownHandler)
 document.addEventListener('keyup', keyupHandler)
 
 function keydownHandler(event) {
-  console.log(event.code + " Held")
+  console.log(event.code + " True")
   if (event.code == "ArrowLeft") {
     leftKey = true;
   }
@@ -81,7 +81,7 @@ function keydownHandler(event) {
 }
 
 function keyupHandler(event) {
-  console.log(event.code + " Released")
+  console.log(event.code + " False")
   if (event.code == "ArrowLeft") {
     leftKey = false;
   }
@@ -154,27 +154,36 @@ function drawScene() {
 
   // Animation
   asteroids.forEach(asteroid => {
+    // If the left arrow key is being held
     if (leftKey) {
-      if (eKey && qKey) { // STOP
+      /* STOP  ASTEROIDS */
+      if (eKey && qKey) {
         if (asteroid["dAngle"] < asteroid["dAngleAdd"]*2 && asteroid["dAngle"] > -asteroid["dAngleAdd"]*2) { // Once near, zero, make it zero
           asteroid["dAngle"] = 0;
         } else if (asteroid["dAngle"] < 0) { // Slow down near zero
           asteroid["dAngle"] += asteroid["dAngleAdd"];
         }
 
-        if (accelerationTracker > -0.01 && accelerationTracker < 0.01){
+        if (accelerationTracker < 0.001) {
           accelerationTracker = 0;
         } else if (accelerationTracker < 4) {
-          accelerationTracker -= daccelerationTrackerAdd;
+          accelerationTracker -= daccelerationTracker;
         }
-      } else if (qKey && (asteroid["dAngle"] > -asteroid["dAngleUpperLimit"])) { // SPEED UP
-        asteroid["dAngle"] += -asteroid["dAngleAdd"];
-
+        
+      } 
+      /* SPEED UP ASTEROIDS LEFT */
+      else if (qKey) {
+        if(asteroid["dAngle"] > -asteroid["dAngleUpperLimit"]){
+          asteroid["dAngle"] += -asteroid["dAngleAdd"];
+        }
+        
         if (accelerationTracker < 3) {
-          accelerationTracker += daccelerationTrackerAdd;
+          accelerationTracker += daccelerationTracker;
         }
 
-      } else if (eKey) { // SLOW DOWN
+      } 
+      /* SLOW DOWN ASTEROIDS LEFT*/
+      else if (eKey) {
         if (asteroid["dAngle"] > -asteroid["dAngleLowerLimit"]) {
           asteroid["dAngle"] -= asteroid["dAngleAdd"];
         }
@@ -183,10 +192,14 @@ function drawScene() {
         }
 
         if (accelerationTracker > 1/6) {
-          accelerationTracker -= daccelerationTrackerAdd;
+          accelerationTracker -= daccelerationTracker;
+        } else if (accelerationTracker < 1/6) {
+          accelerationTracker += daccelerationTracker;
         }
 
-      } else { // NORMALIZE
+      } 
+      /* NORMALIZE ASTEROIDS */
+      else {
         if (asteroid["dAngle"] >= -asteroid["dAngleOriginal"]) {
           asteroid["dAngle"] -= asteroid["dAngleAdd"];
         } else if (asteroid["dAngle"] <= -asteroid["dAngleOriginal"]){
@@ -194,35 +207,42 @@ function drawScene() {
         }
 
         if (accelerationTracker < 4 && accelerationTracker > 1) {
-          accelerationTracker -= daccelerationTrackerAdd;
+          accelerationTracker -= daccelerationTracker;
+        } else if (accelerationTracker > -1 && accelerationTracker < 1) {
+          accelerationTracker += daccelerationTracker;
         }
-
-        if (accelerationTracker > -1 && accelerationTracker < 1) {
-          accelerationTracker += daccelerationTrackerAdd;
-        }
+        
       }
-    } else  {
-      if (eKey && qKey) { // STOP
+    }
+    // If the no arrow keys are being held
+    else  {
+      /* STOP ASTEROIDS */
+      if (eKey && qKey) {
         if (asteroid["dAngle"] < asteroid["dAngleAdd"]*2 && asteroid["dAngle"] > -asteroid["dAngleAdd"]*2) { // Once near, zero, make it zero
           asteroid["dAngle"] = 0;
         } else if (asteroid["dAngle"] > 0) { // Slow down near zero
           asteroid["dAngle"] -= asteroid["dAngleAdd"];
         }
 
-        if (accelerationTracker > -0.01 && accelerationTracker < 0.01){
+        if (accelerationTracker < 0.001){
           accelerationTracker = 0;
         } else if (accelerationTracker < 4) {
-          accelerationTracker -= daccelerationTrackerAdd;
+          accelerationTracker -= daccelerationTracker;
         }
       }
-      else if (qKey && (asteroid["dAngle"] < asteroid["dAngleUpperLimit"])) { // SPEED UP
-        asteroid["dAngle"] += asteroid["dAngleAdd"];
-
+      /* SPEED UP ASTEROIDS */
+      else if (qKey) {
+        if (asteroid["dAngle"] < asteroid["dAngleUpperLimit"]) {
+          asteroid["dAngle"] += asteroid["dAngleAdd"];
+        }
+          
         if (accelerationTracker < 3) {
-          accelerationTracker += daccelerationTrackerAdd;
+          accelerationTracker += daccelerationTracker;
         }
 
-      } else if (eKey) { // SLOW DOWN
+      }
+      /* SLOW DOWN ASTEROIDS */
+      else if (eKey) {
         if (asteroid["dAngle"] > asteroid["dAngleLowerLimit"]) {
           asteroid["dAngle"] -= asteroid["dAngleAdd"];
         }
@@ -231,9 +251,13 @@ function drawScene() {
         }
 
         if (accelerationTracker > 1/6) {
-          accelerationTracker -= daccelerationTrackerAdd;
+          accelerationTracker -= daccelerationTracker;
+        } else if (accelerationTracker < 1/6) {
+          accelerationTracker += daccelerationTracker;
         }
-      } else { // NORMALIZE
+      }
+      /* NORMALIZE ASTEROIDS */
+      else {
         if (asteroid["dAngle"] >= asteroid["dAngleOriginal"]) {
           asteroid["dAngle"] -= asteroid["dAngleAdd"];
         } else if (asteroid["dAngle"] <= asteroid["dAngleOriginal"]){
@@ -241,12 +265,11 @@ function drawScene() {
         }
 
         if (accelerationTracker < 4 && accelerationTracker > 1) {
-          accelerationTracker -= daccelerationTrackerAdd;
+          accelerationTracker -= daccelerationTracker;
+        } else if (accelerationTracker > -1 && accelerationTracker < 1) {
+          accelerationTracker += daccelerationTracker;
         }
-
-        if (accelerationTracker > -1 && accelerationTracker < 1) {
-          accelerationTracker += daccelerationTrackerAdd;
-        }
+        
       }
     }
 
