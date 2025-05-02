@@ -458,8 +458,8 @@ function determineAndColorGivenControl(wantedElement, asteroidControl = true) {
 }
 
 function colorCurrentPressedControl() { 
-  // If a key is being pressed, color it
-  if (leftKey || qKey || eKey || wKey || sKey) {
+  // If a key which affects asteroids is being pressed, color it
+  if (leftKey || qKey || eKey) {
     if (qKey && eKey) {
       determineAndColorGivenControl(qKey_eKeyElement);
     }
@@ -479,13 +479,15 @@ function colorCurrentPressedControl() {
           determineAndColorGivenControl(leftKeyElement);
         }
     }
-
+    
+  }
+ // If a key which affects time is being pressed, color it
+  else if (wKey || sKey) {
     if (wKey) {
       determineAndColorGivenControl(wKeyElement, false);
-    } else if(sKey) {
+    } else if (sKey) {
       determineAndColorGivenControl(sKeyElement, false);
     }
-    
   }
   // If no keys are being pressed, default them all to black
   else {
