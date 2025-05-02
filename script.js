@@ -24,7 +24,7 @@ let wKey = false;
 let sKey = false;
 
 let timeVar = 0;
-let period = 50;
+let period = 100;
 
 let accelerationTracker = 1;
 let daccelerationTracker = (1/360)/50;
@@ -123,10 +123,10 @@ function drawScene() {
     }
   }
   
-  if (wKey && period > 10) {
+  if (wKey && period > 25) {
     period--;
     timeEl.innerHTML = ((1/period)*50).toFixed(2);
-  } else if (sKey && period < 100) {
+  } else if (sKey && period < 200) {
     period++;
     timeEl.innerHTML = ((1/period)*50).toFixed(2);
   }
