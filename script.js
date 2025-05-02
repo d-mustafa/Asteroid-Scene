@@ -465,6 +465,7 @@ function colorCurrentPressedControl() {
     else if (!leftKey) {
         if (qKey) {
           determineAndColorGivenControl(qKeyElement);
+          console.log("changing the q key");
         } else if (eKey) {
           determineAndColorGivenControl(eKeyElement);
         }
@@ -478,7 +479,7 @@ function colorCurrentPressedControl() {
           determineAndColorGivenControl(leftKeyElement);
         }
     }
-    
+    console.log("changing a key");
   }
  // If a key which affects time is being pressed, color it
   if (wKey || sKey) {
