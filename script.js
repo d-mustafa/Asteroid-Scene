@@ -48,6 +48,10 @@ let period = 100;
 let accelerationTracker = 1;
 let daccelerationTracker = (1/360)/50;
 
+// Predefined HTML Elements
+asteroidEl.innerHTML = (accelerationTracker).toFixed(2);
+timeEl.innerHTML = ((1/period)*50).toFixed(2);
+
 
 let timeOfDay = [
   {time: "dawn", skyColor: ["#6e81ff", "#C0D0DF", "#ff8547"], moonColor:`#FFFFFF`, moonAngle: 170},
@@ -479,7 +483,3 @@ function colorCurrentPressedControl() {
   }
 
 }
-
-// Predefined HTML Elements
-asteroidEl.innerHTML = (accelerationTracker).toFixed(2);
-timeEl.innerHTML = ((1/period)*50).toFixed(2);
