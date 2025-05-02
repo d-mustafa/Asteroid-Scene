@@ -124,15 +124,16 @@ function drawScene() {
   }
 
   // Draw the sky
-  const grad=ctx.createLinearGradient(cnv.width/2, 0, cnv.width/2, cnv.height);
+  const grad = ctx.createLinearGradient(cnv.width/2, 0, cnv.width/2, cnv.height);
   grad.addColorStop(0, timeOfDay[timeIndex]["skyColor"][0]);
   grad.addColorStop(0.5, timeOfDay[timeIndex]["skyColor"][1]);
   grad.addColorStop(0.9, timeOfDay[timeIndex]["skyColor"][2]);
   
   ctx.fillStyle = grad;
-
-  // ctx.fillStyle = timeOfDay[timeIndex]["skyColor"];
   ctx.fillRect(0,0,cnv.width, cnv.height);
+  
+  // Change titleEl color
+  titleEl.style.color = timeOfDay[timeIndex]["skyColor"][0];
 
   // Asteroids
   asteroids.forEach(asteroid => {
@@ -369,7 +370,7 @@ function drawScene() {
   ctx.lineTo(387, 408);
   ctx.fill();
 
-  titleEl.style.color = timeOfDay[timeIndex]["skyColor"];
+  
   window.requestAnimationFrame(drawScene);
 }
 window.requestAnimationFrame(drawScene);
