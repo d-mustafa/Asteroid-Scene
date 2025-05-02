@@ -431,7 +431,7 @@ function createAsteroid() {
 }
 
 
-function determineAndColorGivenControl(wantedElement, asteroidControl = True) {
+function determineAndColorGivenControl(wantedElement, asteroidControl = true) {
   for (let key in controlElements) {
     // Only Color/Discolor if it's a control that affects asteroids
     if (asteroidControl) {
@@ -481,9 +481,9 @@ function colorCurrentPressedControl() {
     }
 
     if (wKey) {
-      determineAndColorGivenControl(wKeyElement, False);
+      determineAndColorGivenControl(wKeyElement, false);
     } else if(sKey) {
-      determineAndColorGivenControl(sKeyElement, False);
+      determineAndColorGivenControl(sKeyElement, false);
     }
     
   }
