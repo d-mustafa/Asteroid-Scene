@@ -446,13 +446,15 @@ function colorCurrentPressedControl() {
   if (leftKey || qKey || eKey || wKey || sKey) {
     if (qKey && eKey) {
       determineAndColorGivenControl(qKey_eKeyElement);
-    } else if (!leftKey) {
+    }
+    else if (!leftKey) {
         if (qKey) {
           determineAndColorGivenControl(qKeyElement);
         } else if (eKey) {
           determineAndColorGivenControl(eKeyElement);
         }
-    } else if (leftKey) {
+    }
+    else if (leftKey) {
         if (qKey) {
           determineAndColorGivenControl(leftKey_qKeyElement);
         } else if (eKey) {
@@ -460,8 +462,15 @@ function colorCurrentPressedControl() {
         } else {
           determineAndColorGivenControl(leftKeyElement);
         }
-      }
     }
+
+    if(wKey) {
+      determineAndColorGivenControl(wKeyElement);
+    } else if(sKey) {
+      determineAndColorGivenControl(sKeyElement);
+    }
+    
+  }
   // If no keys are being pressed, default them all to black
   else {
     for (let element in controlsElements) {
@@ -469,11 +478,6 @@ function colorCurrentPressedControl() {
     }
   }
 
-  if(wKey) {
-    determineAndColorGivenControl(wKeyElement);
-  } else if(sKey) {
-    determineAndColorGivenControl(sKeyElement);
-  }
 }
 
 // Predefined HTML Elements
