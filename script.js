@@ -165,21 +165,21 @@ function drawScene() {
           asteroid["dAngle"] += asteroid["dAngleAdd"];
         }
 
-        if (accelerationTracker < 0.001) {
+        if (accelerationTracker > -0.001) {
           accelerationTracker = 0;
-        } else if (accelerationTracker < 4) {
-          accelerationTracker -= daccelerationTracker;
+        } else if (accelerationTracker > -4) {
+          accelerationTracker += daccelerationTracker;
         }
         
       } 
       /* SPEED UP ASTEROIDS LEFT */
       else if (qKey) {
         if(asteroid["dAngle"] > -asteroid["dAngleUpperLimit"]){
-          asteroid["dAngle"] += -asteroid["dAngleAdd"];
+          asteroid["dAngle"] -= asteroid["dAngleAdd"];
         }
         
-        if (accelerationTracker < 3) {
-          accelerationTracker += daccelerationTracker;
+        if (accelerationTracker > -3) {
+          accelerationTracker -= daccelerationTracker;
         }
 
       } 
@@ -192,9 +192,9 @@ function drawScene() {
           asteroid["dAngle"] += asteroid["dAngleAdd"];
         }
 
-        if (accelerationTracker > 1/6) {
+        if (accelerationTracker > -1/6) {
           accelerationTracker -= daccelerationTracker;
-        } else if (accelerationTracker < 1/6) {
+        } else if (accelerationTracker < -1/6) {
           accelerationTracker += daccelerationTracker;
         }
 
@@ -207,10 +207,10 @@ function drawScene() {
           asteroid["dAngle"] += asteroid["dAngleAdd"];
         }
 
-        if (accelerationTracker < 4 && accelerationTracker > 1) {
-          accelerationTracker -= daccelerationTracker;
-        } else if (accelerationTracker > -1 && accelerationTracker < 1) {
+        if (accelerationTracker > -4 && accelerationTracker < -1) {
           accelerationTracker += daccelerationTracker;
+        } else if (accelerationTracker > -1 && accelerationTracker < 1) {
+          accelerationTracker -= daccelerationTracker;
         }
         
       }
