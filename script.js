@@ -164,7 +164,7 @@ function drawScene() {
 
         if (accelerationTracker > -0.01 && accelerationTracker < 0.01){
           accelerationTracker = 0;
-        } else if (accelerationTracker < 3) {
+        } else if (accelerationTracker < 4) {
           accelerationTracker -= daccelerationTrackerAdd;
         }
       } else if (qKey && (asteroid["dAngle"] > -asteroid["dAngleUpperLimit"])) { // SPEED UP
@@ -211,7 +211,7 @@ function drawScene() {
 
         if (accelerationTracker > -0.01 && accelerationTracker < 0.01){
           accelerationTracker = 0;
-        } else if (accelerationTracker < 3) {
+        } else if (accelerationTracker < 4) {
           accelerationTracker -= daccelerationTrackerAdd;
         }
       }
