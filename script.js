@@ -479,6 +479,15 @@ function colorCurrentPressedControl() {
         }
     }
   }
+  // If no keys which affect asteroids are being pressed, default them all to black
+  else if (!leftKey && !qKey && !eKey) {
+    for (let key in controlElements) {
+      for (let element in controlElements[key]["affectsAsteroids"]) {
+        controlElements[key]["affectsAsteroids"][element].style.color = "black";
+      }
+    }
+  } 
+  
  // If a key which affects time is being pressed, color it
   if (wKey || sKey) {
     if (wKey) {
@@ -487,17 +496,8 @@ function colorCurrentPressedControl() {
       determineAndColorGivenControl(sKeyElement, false);
     }
   }
-    
-  // If no keys which affect asteroids are being pressed, default them all to black
-  if (!leftKey && !qKey && !eKey) {
-    for (let key in controlElements) {
-      for (let element in controlElements[key]["affectsAsteroids"]) {
-        controlElements[key]["affectsAsteroids"][element].style.color = "black";
-      }
-    }
-  } 
   // If no keys which affect time are being pressed, default them all to black
-  if (!wKey && !sKey) {
+  else if (!wKey && !sKey) {
       for (let element in controlElements[key]["affectsTime"]) {
         controlElements[key]["affectsTime"][element].style.color = "black";
       }
