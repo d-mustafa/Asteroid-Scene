@@ -58,7 +58,6 @@ document.addEventListener('keydown', keydownHandler)
 document.addEventListener('keyup', keyupHandler)
 
 function keydownHandler(event) {
-  console.log(event.code + " True");
   if (event.code == "ArrowLeft") {
     leftKey = true;
     console.log("Asteroids are now rotating counterclockwise.");
@@ -86,7 +85,6 @@ function keydownHandler(event) {
 }
 
 function keyupHandler(event) {
-  console.log(event.code + " False")
   if (event.code == "ArrowLeft") {
     leftKey = false;
     console.log("Asteroids are now rotating clockwise.");
