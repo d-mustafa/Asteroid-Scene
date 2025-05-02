@@ -436,7 +436,7 @@ function determineAndColorGivenControl(wantedElement, asteroidControl = True) {
     // Only Color/Discolor if it's a control that affects asteroids
     if (asteroidControl) {
       for (let element in controlElements[key]["affectsAsteroids"]) {
-        if (controlElements[key]["affectsAsteroids"][element] == eval(wantedElement) {
+        if (controlElements[key]["affectsAsteroids"][element] == eval(wantedElement)) {
           controlElements[key]["affectsAsteroids"][element].style.color = timeOfDay[timeIndex]["skyColor"][2];
         } else {
           controlElements[key]["affectsAsteroids"][element].style.color = "black";
@@ -447,7 +447,7 @@ function determineAndColorGivenControl(wantedElement, asteroidControl = True) {
     // Only Color/Discolor if it's a control that affects time
     else {
       for (let element in controlElements[key]["affectsTime"]) {
-        if (controlElements[key]["affectsTime"][element] == eval(wantedElement) {
+        if (controlElements[key]["affectsTime"][element] == eval(wantedElement)) {
           controlElements[key]["affectsTime"][element].style.color = timeOfDay[timeIndex]["skyColor"][2];
         } else {
           controlElements[key]["affectsTime"][element].style.color = "black";
