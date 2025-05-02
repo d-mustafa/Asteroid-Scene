@@ -215,14 +215,15 @@ function drawScene() {
           asteroid["dAngle"] += asteroid["dAngleAdd"];
         }
 
-        if (accelerationTracker > -4 && accelerationTracker < -1) {
+        if (accelerationTracker < -1) {
           accelerationTracker += daccelerationTracker;
-        } else if (accelerationTracker > -1 && accelerationTracker < 1) {
+        } else if (accelerationTracker > -1) {
           accelerationTracker -= daccelerationTracker;
         }
         
       }
     }
+      
     // If the no arrow keys are being held
     else  {
       /* STOP ASTEROIDS */
@@ -273,9 +274,9 @@ function drawScene() {
           asteroid["dAngle"] += asteroid["dAngleAdd"];
         }
 
-        if (accelerationTracker < 4 && accelerationTracker > 1) {
+        if (accelerationTracker > 1) {
           accelerationTracker -= daccelerationTracker;
-        } else if (accelerationTracker > -1 && accelerationTracker < 1) {
+        } else if (accelerationTracker < 1) {
           accelerationTracker += daccelerationTracker;
         }
         
