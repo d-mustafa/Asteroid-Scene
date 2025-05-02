@@ -6,6 +6,25 @@ let titleEl = document.getElementById('title');
 let asteroidEl = document.getElementById('asteroid-speed');
 let timeEl = document.getElementById('time-speed');
 
+let qKeyElement = document.getElementById('qkey');
+let eKeyElement = document.getElementById('ekey');
+let qKey_eKeyElement = document.getElementById('qkey-plus-ekey');
+let leftKeyElement = document.getElementById('leftkey');
+let leftKey_qKeyElement = document.getElementById('leftkey-plus-qkey');
+let leftKey_eKeyElement = document.getElementById('leftkey-plus-ekey');
+let wKeyElement = document.getElementById('wkey');
+let sKeyElement = document.getElementById('skey');
+
+let controlsElements = [
+  qKeyElement,
+  eKeyElement,
+  qKey_eKeyElement,
+  leftKeyElement,
+  leftKey_qKeyElement,
+  leftKey_eKeyElement,
+  wKeyElement,
+  sKeyElement
+];
 
 // Variables
 let asteroids = [];
@@ -112,7 +131,8 @@ function keyupHandler(event) {
 }
 
 function drawScene() {
-
+  colorCurrentPressedControl();
+  
   // Time Related
   timeVar++;
 
@@ -178,7 +198,8 @@ function drawScene() {
         } else if (accelerationTracker > -4) {
           accelerationTracker += daccelerationTracker;
         }
-        
+
+        qKey_eKeyElement.style.color = timeOfDay[timeIndex]["skyColor"][0];
       } 
       /* SPEED UP ASTEROIDS LEFT */
       else if (qKey) {
@@ -392,7 +413,7 @@ function createAsteroid() {
     angle: Math.random() * 360,
     dAngle: Math.random() * 1.9 + 0.1,
     color: Math.random() * 150 + 50,
-  }
+  
 
   oneAsteroid.dAngleOriginal = oneAsteroid.dAngle;
   oneAsteroid.dAngleUpperLimit = oneAsteroid.dAngle*3;
@@ -410,23 +431,42 @@ function createAsteroid() {
   return oneAsteroid;
 }
 
+function determineAndColorGivenControl(wantedElement) {
+    for (let element in controlsElements) {
+      if(controlsElements[element] != eval(wantedElement)) {
+        controlsElements[element].style.color = "black";
+      } else {
+        controlsElements[element].style.color = timeOfDay[timeIndex]["skyColor"][2];
+      }
+    }
+}
+
+function colorCurrentPressedControl() { 
+  if (qKey && eKey) {
+    determineAndColorGivenControl(qKey_eKeyElement);
+  } else if (!leftKey) {
+      if (qKey) {
+        determineAndColorGivenControl(qKeyElement);
+      } else if (eKey) {
+        determineAndColorGivenControl(eKeyElement);
+      }
+  } else if (leftKey) {
+      if (qKey) {
+        determineAndColorGivenControl(leftKey_qKeyElement);
+      } else if (eKey) {
+        determineAndColorGivenControl(leftKey_eKeyElement);
+      } else {
+        determineAndColorGivenControl(leftKeyElement);
+      }
+  }
+
+  if(wKey) {
+    determineAndColorGivenControl(wKeyElement);
+  } else if(sKey) {
+    determineAndColorGivenControl(sKeyElement);
+  }
+}
+
 // Predefined HTML Elements
 asteroidEl.innerHTML = (accelerationTracker).toFixed(2);
 timeEl.innerHTML = ((1/period)*50).toFixed(2);
-
-// ***************************************************
-// Global Vars
-let mouseX;
-let mouseY;
-
-// mouse movement listener
-cnv.addEventListener('mousemove', mousemoveHandler);
-
-// Math Helper Functions
-function mousemoveHandler(event) {
-  let rect = cnv.getBoundingClientRect();
-  mouseX = event.clientX - rect.left;
-  mouseY = event.clientY - rect.top;
-  console.log('X: ' + mouseX + '  Y: ' + mouseY);
-}
-// ***************************************************
