@@ -58,25 +58,30 @@ document.addEventListener('keydown', keydownHandler)
 document.addEventListener('keyup', keyupHandler)
 
 function keydownHandler(event) {
-  console.log(event.code + " True")
+  console.log(event.code + " True");
   if (event.code == "ArrowLeft") {
     leftKey = true;
+    console.log("Asteroids are now rotating counterclockwise.");
   }
 
   if (event.code == "KeyQ") {
     qKey = true;
+    console.log("Asteroids are now speeding up.");
   }
 
   if (event.code == "KeyE") {
     eKey = true;
+    console.log("Asteroids are now slowing down.");
   }
 
   if (event.code == "KeyW") {
     wKey = true;
+    console.log("Time is accelerating.");
   }
 
   if (event.code == "KeyS") {
     sKey = true;
+    console.log("Time is deccelerating.");
   }
 }
 
@@ -84,22 +89,27 @@ function keyupHandler(event) {
   console.log(event.code + " False")
   if (event.code == "ArrowLeft") {
     leftKey = false;
+    console.log("Asteroids are now rotating clockwise.");
   }
 
   if (event.code == "KeyQ") {
     qKey = false;
+    console.log("Asteroids are no longer speeding up.");
   }
 
   if (event.code == "KeyE") {
     eKey = false;
+    console.log("Asteroids are no longer slowing down.");
   }
 
   if (event.code == "KeyW") {
     wKey = false;
+    console.log("Time is no longer accelerating.");
   }
 
   if (event.code == "KeyS") {
     sKey = false;
+    console.log("Time is no longer deccelerating.");
   }
 }
 
