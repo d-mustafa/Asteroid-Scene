@@ -15,18 +15,9 @@ let leftKey_eKeyElement = document.getElementById('leftkey-plus-ekey');
 let wKeyElement = document.getElementById('wkey');
 let sKeyElement = document.getElementById('skey');
 
-let controlsElements = [
-  qKeyElement,
-  eKeyElement,
-  qKey_eKeyElement,
-  leftKeyElement,
-  leftKey_qKeyElement,
-  leftKey_eKeyElement,
-  wKeyElement,
-  sKeyElement
-];
 
-// Variables
+
+// Variables, Arrays and Associative Arrays
 let asteroids = [];
 let moon = {
   x: 0,
@@ -36,22 +27,22 @@ let moon = {
   dAngle: 12,
 }
 
+
 let leftKey = false;
 let qKey = false;
 let eKey = false;
 let wKey = false;
 let sKey = false;
-
-let timeVar = 0;
-let period = 100;
-
-let accelerationTracker = 1;
-let daccelerationTracker = (1/360)/50;
-
-// Predefined HTML Elements
-asteroidEl.innerHTML = (accelerationTracker).toFixed(2);
-timeEl.innerHTML = ((1/period)*50).toFixed(2);
-
+let controlElements = [
+  qKeyElement,
+  eKeyElement,
+  qKey_eKeyElement,
+  leftKeyElement,
+  leftKey_qKeyElement,
+  leftKey_eKeyElement,
+  wKeyElement,
+  sKeyElement
+];
 
 let timeOfDay = [
   {time: "dawn", skyColor: ["#6e81ff", "#C0D0DF", "#ff8547"], moonColor:`#FFFFFF`, moonAngle: 170},
@@ -67,9 +58,19 @@ let timeOfDay = [
   {time: "late night", skyColor: ["#082855", "#0B5B9F", "#0B83BD"], moonColor:`#BDBDBD`, moonAngle: 40},
   {time: "moonset", skyColor: ["#10366b", "#146ab3", "#1089c4"], moonColor:`#757575`, moonAngle: 430},
 ];
-
-// 400, 350, 275, 200
 let timeIndex = 0;
+let timeVar = 0;
+let period = 100;
+
+
+let accelerationTracker = 1;
+let daccelerationTracker = (1/360)/50;
+
+// Predefined HTML Elements
+titleEl.style.color = timeOfDay[timeIndex]["skyColor"][0];
+asteroidEl.innerHTML = (accelerationTracker).toFixed(2);
+timeEl.innerHTML = ((1/period)*50).toFixed(2);
+
 
 // Fill asteroid associative array
 for(let i = 0; i < 1000; i++) {
@@ -436,11 +437,11 @@ function createAsteroid() {
 }
 
 function determineAndColorGivenControl(wantedElement) {
-    for (let element in controlsElements) {
-      if(controlsElements[element] != eval(wantedElement)) {
-        controlsElements[element].style.color = "black";
+    for (let element in controlElements) {
+      if(controlElements[element] != eval(wantedElement)) {
+        controlElements[element].style.color = "black";
       } else {
-        controlsElements[element].style.color = timeOfDay[timeIndex]["skyColor"][2];
+        controlElements[element].style.color = timeOfDay[timeIndex]["skyColor"][2];
       }
     }
 }
@@ -477,8 +478,8 @@ function colorCurrentPressedControl() {
   }
   // If no keys are being pressed, default them all to black
   else {
-    for (let element in controlsElements) {
-        controlsElements[element].style.color = "black";
+    for (let element in controlElements) {
+        controlElements[element].style.color = "black";
     }
   }
 
