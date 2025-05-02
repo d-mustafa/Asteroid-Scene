@@ -465,7 +465,6 @@ function colorCurrentPressedControl() {
     else if (!leftKey) {
         if (qKey) {
           determineAndColorGivenControl(qKeyElement);
-          console.log("changing the q key");
         } else if (eKey) {
           determineAndColorGivenControl(eKeyElement);
         }
@@ -479,7 +478,6 @@ function colorCurrentPressedControl() {
           determineAndColorGivenControl(leftKeyElement);
         }
     }
-    console.log("changing a key");
   }
  // If a key which affects time is being pressed, color it
   if (wKey || sKey) {
@@ -491,7 +489,7 @@ function colorCurrentPressedControl() {
   }
     
   // If no keys are being pressed, default them all to black
-  if (!leftKey || !qKey || !eKey || !wKey || !sKey) {
+  if (!leftKey && !qKey && !eKey && !wKey && !sKey) {
     for (let key in controlElements) {
       for (let element in controlElements[key]["affectsAsteroids"]) {
         controlElements[key]["affectsAsteroids"][element].style.color = "black";
