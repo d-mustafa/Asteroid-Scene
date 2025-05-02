@@ -498,9 +498,9 @@ function colorCurrentPressedControl() {
   }
   // If no keys which affect time are being pressed, default them all to black
   else if (!wKey && !sKey) {
-      for (let element in controlElements[key]["affectsTime"]) {
-        controlElements[key]["affectsTime"][element].style.color = "black";
-      }
+    for (let element in controlElements[key]["affectsTime"]) {
+      controlElements[key]["affectsTime"][element].style.color = "black";
     }
   }
 }
+
