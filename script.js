@@ -442,22 +442,31 @@ function determineAndColorGivenControl(wantedElement) {
 }
 
 function colorCurrentPressedControl() { 
-  if (qKey && eKey) {
-    determineAndColorGivenControl(qKey_eKeyElement);
-  } else if (!leftKey) {
-      if (qKey) {
-        determineAndColorGivenControl(qKeyElement);
-      } else if (eKey) {
-        determineAndColorGivenControl(eKeyElement);
+  // If a key is being pressed, color it
+  if (leftKey || qKey || eKey || wKey || sKey) {
+    if (qKey && eKey) {
+      determineAndColorGivenControl(qKey_eKeyElement);
+    } else if (!leftKey) {
+        if (qKey) {
+          determineAndColorGivenControl(qKeyElement);
+        } else if (eKey) {
+          determineAndColorGivenControl(eKeyElement);
+        }
+    } else if (leftKey) {
+        if (qKey) {
+          determineAndColorGivenControl(leftKey_qKeyElement);
+        } else if (eKey) {
+          determineAndColorGivenControl(leftKey_eKeyElement);
+        } else {
+          determineAndColorGivenControl(leftKeyElement);
+        }
       }
-  } else if (leftKey) {
-      if (qKey) {
-        determineAndColorGivenControl(leftKey_qKeyElement);
-      } else if (eKey) {
-        determineAndColorGivenControl(leftKey_eKeyElement);
-      } else {
-        determineAndColorGivenControl(leftKeyElement);
-      }
+    }
+  // If no keys are being pressed, default them all to black
+  else {
+    for (let element in controlsElements) {
+        controlsElements[element].style.color = "black";
+    }
   }
 
   if(wKey) {
