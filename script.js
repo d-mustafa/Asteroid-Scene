@@ -434,7 +434,7 @@ function createAsteroid() {
 function determineAndColorGivenControl(wantedElement, asteroidControl = True) {
   for (let key in controlElements) {
     // Only Color/Discolor if it's a control that affects asteroids
-      (asteroidControl) {
+    if (asteroidControl) {
       for (let element in controlElements[key]["affectsAsteroids"]) {
         if (controlElements[key]["affectsAsteroids"][element] == eval(wantedElement) {
           controlElements[key]["affectsAsteroids"][element].style.color = timeOfDay[timeIndex]["skyColor"][2];
