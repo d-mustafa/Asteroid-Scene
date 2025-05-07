@@ -319,22 +319,37 @@ function drawScene() {
 
   ctx.restore();
   
+  
+  // Background Hill 1
+  ctx.fillStyle = "rgb(0, 65, 0)";
+  ctx.beginPath();
+  ctx.moveTo(630, 430);
+  ctx.quadraticCurveTo(700, 360, 770, 430);
+  ctx.fill();
 
-  // Backdrop Hill 1
-  ctx.fillStyle = "rgb(0, 73, 0)";
+  // Background Hill 2
+  ctx.fillStyle = "rgb(0, 63, 0)";
+  ctx.beginPath();
+  ctx.moveTo(25, 440);
+  ctx.quadraticCurveTo(100, 350, 175, 440);
+  ctx.fill();
+
+  // Background Hill 3
+  ctx.fillStyle = "rgb(0, 114, 0)";
   ctx.beginPath();
   ctx.moveTo(-200, 500);
   ctx.quadraticCurveTo(0, 300, 200, 500);
   ctx.fill();
 
-  // Backdrop Hill 2
-  ctx.fillStyle = "rgb(0, 54, 0)";
+  // Background Hill 4
+  ctx.fillStyle = "rgb(0, 83, 0)";
   ctx.beginPath();
   ctx.moveTo(400, 500);
-  ctx.quadraticCurveTo(600, 300, 800, 500);
+  ctx.quadraticCurveTo(600, 280, 800, 500);
   ctx.fill();
 
-  // Backdrop Tree
+
+  // Background Tree
   ctx.fillStyle = "rgb(44, 25, 0)";
   ctx.fillRect(630, 420, 20, 60);
   ctx.fillStyle = "rgb(0, 110, 0)";
@@ -350,7 +365,7 @@ function drawScene() {
   ctx.fill();
 
   // Front Hill
-  ctx.fillStyle = "rgb(0, 124, 0)";
+  ctx.fillStyle = "rgb(0, 177, 0)";
   ctx.beginPath()
   ctx.moveTo(0, 500);
   ctx.quadraticCurveTo(350, 200, 700, 500);
@@ -505,4 +520,3 @@ function colorCurrentPressedControl() {
     }
   }
 }
-
